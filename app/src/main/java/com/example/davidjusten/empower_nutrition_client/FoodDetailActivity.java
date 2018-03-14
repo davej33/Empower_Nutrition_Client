@@ -1,12 +1,18 @@
 package com.example.davidjusten.empower_nutrition_client;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +31,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     private Button mOrderButton;
     private FirebaseAuth mAuth;
     private FirebaseUser current_user;
-    private DatabaseReference user_data;
+    private DatabaseReference user_data, mRef;
+    private String food_name, food_desc, food_image, food_price;
 
 
     @Override
@@ -51,10 +58,10 @@ public class FoodDetailActivity extends AppCompatActivity {
         mDb.child(item_key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String food_name = (String) dataSnapshot.child("name").getValue();
-                String food_desc = (String) dataSnapshot.child("desc").getValue();
-                String food_price = (String) dataSnapshot.child("price").getValue();
-                String food_image = (String) dataSnapshot.child("image").getValue();
+                food_name = (String) dataSnapshot.child("name").getValue();
+                food_desc = (String) dataSnapshot.child("desc").getValue();
+                food_price = (String) dataSnapshot.child("price").getValue();
+                food_image = (String) dataSnapshot.child("image").getValue();
 
                 mDetailName.setText(food_name);
                 mDetailDesc.setText(food_desc);
@@ -64,6 +71,32 @@ public class FoodDetailActivity extends AppCompatActivity {
 //                    .placeholder(R.drawable.user_placeholder)
 //                    .error(R.drawable.user_placeholder_error)
                         .into(mDetailImage);
+
+                mRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void purchaseItemClicked(View view) {
+        final DatabaseReference newOrder = mRef.push();
+        user_data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("tag","datasnapshot: " + dataSnapshot.child("Name").getValue());
+                newOrder.child("itemName").setValue(food_name);
+                newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                startActivity(new Intent(FoodDetailActivity.this, MenuActivity.class));
+                            }
+                        }
+                );
             }
 
             @Override

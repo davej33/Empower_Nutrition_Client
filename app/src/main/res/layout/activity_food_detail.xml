@@ -10,22 +10,31 @@
     <ImageView
         android:id="@+id/detailImageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="120dp"
+        android:src="@drawable/beet_shot"/>
     <TextView
         android:id="@+id/detailName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Beet Juice"/>
     <TextView
         android:id="@+id/detailDesc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="Taste like Beet Juice"/>
     <TextView
         android:id="@+id/detailPrice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="$5"/>
 
     <Button
         android:id="@+id/detailPurchase"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Purchase"
+        android:onClick="purchaseItemClicked"
+        />
 </LinearLayout>
