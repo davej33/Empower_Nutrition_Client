@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userEmail"
-        android:hint="Enter Email"/>
+        android:text="demo@gmail.com"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userPassword"
-        android:hint="Enter Password"/>
+        android:text="demo123"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

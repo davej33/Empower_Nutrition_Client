@@ -9,15 +9,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -30,6 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     private DatabaseReference mDbRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseRecyclerAdapter<Food, FoodViewHolder> mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,12 +46,12 @@ public class MenuActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDbRef = FirebaseDatabase.getInstance().getReference().child("Item");
-
+        mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
-                    Intent loginIntent = new Intent(MenuActivity.this,MainActivity.class);
+                    Intent loginIntent = new Intent(MenuActivity.this, MainActivity.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(loginIntent);
 
@@ -58,50 +63,77 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-        FirebaseRecyclerAdapter<Food,FoodViewHolder> adapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
 
-                Food.class,
-                R.layout.menu_item,
-                FoodViewHolder.class,
-                mDbRef
+
+        mAuth.addAuthStateListener(mAuthListener);
+        Query query = mDbRef;
+        FirebaseRecyclerOptions<Food> options = new FirebaseRecyclerOptions.Builder<Food>()
+                .setQuery(query, Food.class)
+                .build();
+        mAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
+                options
         ) {
             @Override
             protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull Food model) {
+                holder.setDesc(model.getDesc());
+                Log.i("This", "desc check: " + model.getDesc());
+                holder.setName(model.getName());
+                holder.setPrice(model.getPrice());
+                holder.setImage(model.getImage());
 
+                final String item_key = getRef(position).getKey().toString();
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent detailIntent = new Intent(MenuActivity.this, FoodDetailActivity.class);
+                        detailIntent.putExtra("ItemId", item_key);
+                        startActivity(detailIntent);
+                    }
+                });
             }
 
             @Override
             public FoodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return null;
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false);
+                return new FoodViewHolder(view);
             }
         };
+        mAdapter.startListening();
+
+        mRecyclerView.setAdapter(mAdapter);
     }
 
-    public static class FoodViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+    public static class FoodViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
+
         public FoodViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
         }
 
-        public void setName(String name){
+        public void setName(String name) {
             TextView food_name = mView.findViewById(R.id.item_name);
             food_name.setText(name);
         }
 
-        public void setDesc(String desc){
+        public void setDesc(String desc) {
             TextView food_desc = mView.findViewById(R.id.item_desc);
             food_desc.setText(desc);
         }
 
-        public void setPrice(String price){
+        public void setPrice(String price) {
             TextView food_price = mView.findViewById(R.id.item_price);
             food_price.setText(price);
         }
 
-        public void setImage(Context context, String image){
+        public void setImage(String image) {
             ImageView food_image = mView.findViewById(R.id.item_image);
             Picasso.get()
                     .load(image)
