@@ -70,16 +70,14 @@ public class MenuActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<Food> options = new FirebaseRecyclerOptions.Builder<Food>()
                 .setQuery(query, Food.class)
                 .build();
-        mAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(
-                options
-        ) {
+        mAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull Food model) {
                 holder.setDesc(model.getDesc());
                 Log.i("This", "desc check: " + model.getDesc());
                 holder.setName(model.getName());
                 holder.setPrice(model.getPrice());
-                holder.setImage(model.getImage());
+//                holder.setImage(model.getImage());
 
                 final String item_key = getRef(position).getKey().toString();
                 holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -133,13 +131,13 @@ public class MenuActivity extends AppCompatActivity {
             food_price.setText(price);
         }
 
-        public void setImage(String image) {
-            ImageView food_image = mView.findViewById(R.id.item_image);
-            Picasso.get()
-                    .load(image)
-//                    .placeholder(R.drawable.user_placeholder)
-//                    .error(R.drawable.user_placeholder_error)
-                    .into(food_image);
-        }
+//        public void setImage(String image) {
+//            ImageView food_image = mView.findViewById(R.id.item_image);
+//            Picasso.get()
+//                    .load(image)
+////                    .placeholder(R.drawable.user_placeholder)
+////                    .error(R.drawable.user_placeholder_error)
+//                    .into(food_image);
+//        }
     }
 }
