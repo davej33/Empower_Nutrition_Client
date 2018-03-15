@@ -6,15 +6,18 @@ package com.example.davidjusten.empower_nutrition_client;
 
 public class Food {
 
-    private String mName, mPrice, mDesc, mImage; // mType, mTextColor, DescBgColor
+    private String mName, mPrice, mDesc, mImage;
+    private String mType;
 
-    public Food(){}
+    public Food() {
+    }
 
-    public Food(String name, String price, String desc, String image){
+    public Food(String name, String price, String desc, String image, String type) {
         mName = name;
         mPrice = price;
         mDesc = desc;
         mImage = image;
+        mType = type;
 
     }
 
@@ -48,5 +51,13 @@ public class Food {
 
     public void setImage(String mImage) {
         this.mImage = mImage;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public void setType(String mType) {
+        this.mType = mType;
     }
 }

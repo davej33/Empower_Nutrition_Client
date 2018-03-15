@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Empower_Nutrition_Client</string>
     <string name="strawberry_banana_smoothie">Strawberry-Banana Smoothie</string>
+    <string name="juices">juices</string>
+    <string name="shots">shots</string>
+    <string name="bowls">bowls</string>
 </resources>

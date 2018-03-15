@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(user_id)) {
-                    Intent menuIntent = new Intent(LoginActivity.this, MenuActivity.class);
+                    Intent menuIntent = new Intent(LoginActivity.this, ItemCategoryActivity.class);
                     startActivity(menuIntent);
                 }
             }

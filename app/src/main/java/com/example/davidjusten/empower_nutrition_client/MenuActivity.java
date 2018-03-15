@@ -30,16 +30,27 @@ import com.squareup.picasso.Picasso;
 
 public class MenuActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = MenuActivity.class.getSimpleName();
+    private static final String SMOOTHIE = "Smoothie";
+    private static final String SHOT = "Shot";
+    private static final String BOWL = "Bowl";
+    private static final String JUICE = "Juice";
+    private static final String TYPE = "type";
+
     private RecyclerView mRecyclerView;
     private DatabaseReference mDbRef;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseRecyclerAdapter<Food, FoodViewHolder> mAdapter;
+    private String mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        // get item type
+        mType = getIntent().getStringExtra(TYPE);
 
         mRecyclerView = findViewById(R.id.menu_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -54,7 +65,6 @@ public class MenuActivity extends AppCompatActivity {
                     Intent loginIntent = new Intent(MenuActivity.this, MainActivity.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(loginIntent);
-
                 }
             }
         };
@@ -64,9 +74,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
         mAuth.addAuthStateListener(mAuthListener);
-        Query query = mDbRef;
+        Query query = writeQuery();
         FirebaseRecyclerOptions<Food> options = new FirebaseRecyclerOptions.Builder<Food>()
                 .setQuery(query, Food.class)
                 .build();
@@ -77,9 +86,8 @@ public class MenuActivity extends AppCompatActivity {
                 Log.i("This", "desc check: " + model.getDesc());
                 holder.setName(model.getName());
                 holder.setPrice(model.getPrice());
-//                holder.setImage(model.getImage());
 
-                final String item_key = getRef(position).getKey().toString();
+                final String item_key = getRef(position).getKey();
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -96,9 +104,26 @@ public class MenuActivity extends AppCompatActivity {
                 return new FoodViewHolder(view);
             }
         };
+
         mAdapter.startListening();
 
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private Query writeQuery() {
+        switch (mType) {
+            case SMOOTHIE:
+                return mDbRef.orderByChild("type").equalTo("Smoothie");
+            case JUICE:
+                return mDbRef.orderByChild("type").equalTo("Juice");
+            case SHOT:
+                return mDbRef.orderByChild("type").equalTo("Shot");
+            case BOWL:
+                return mDbRef.orderByChild("type").equalTo("Bowl");
+            default:
+                Log.e(LOG_TAG, "No item type match for Firebase query: " + mType);
+        }
+        return null;
     }
 
     @Override
