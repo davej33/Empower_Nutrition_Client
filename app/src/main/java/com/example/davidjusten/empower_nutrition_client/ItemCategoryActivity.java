@@ -37,7 +37,6 @@ public class ItemCategoryActivity extends AppCompatActivity {
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.i("tag", "is this running?????????????????????? ");
                 if (firebaseAuth.getCurrentUser() != null) {
                     // signed in
                     Toast.makeText(ItemCategoryActivity.this, "You're signed in!", Toast.LENGTH_SHORT).show();

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/empower_bg_v"
     android:layout_height="match_parent"
     tools:context="com.example.davidjusten.empower_nutrition_client.FoodDetailActivity">
 
@@ -12,24 +13,40 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:src="@drawable/beet_shot"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="#aaffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/detailName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:text="Beet Juice"/>
     <TextView
         android:id="@+id/detailDesc"
+        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:text="Taste like Beet Juice"/>
     <TextView
         android:id="@+id/detailPrice"
+        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="$5"/>
-
+    <TextView
+        android:textSize="20sp"
+        android:id="@+id/detailQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantity: 1"/>
+    </LinearLayout>
     <Button
         android:id="@+id/detailPurchase"
         android:layout_width="match_parent"

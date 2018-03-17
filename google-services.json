@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "482450940251",
+    "firebase_url": "https://empowernutritionpickuporders.firebaseio.com",
+    "project_id": "empowernutritionpickuporders",
+    "storage_bucket": "empowernutritionpickuporders.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482450940251:android:f5be23505daf7a51",
+        "android_client_info": {
+          "package_name": "com.example.davidjusten.empowernutritionpickuporders"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482450940251-7emi9pkcp1bhf4kluh0s3454fia51u2l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.davidjusten.empowernutritionpickuporders",
+            "certificate_hash": "bd08e938cc3490a5e7b1270d4e9858ce3507364e"
+          }
+        },
+        {
+          "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEab7b4eBagGRv2-2Rf_jnU7f9gq5m-OE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482450940251:android:d66af6bb9a3d1e0f",
+        "android_client_info": {
+          "package_name": "com.example.davidjusten.empower_nutrition_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482450940251-acdl7p2md4dlbn347e4m39t1jrc1a0cu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.davidjusten.empower_nutrition_admin",
+            "certificate_hash": "bd08e938cc3490a5e7b1270d4e9858ce3507364e"
+          }
+        },
+        {
+          "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEab7b4eBagGRv2-2Rf_jnU7f9gq5m-OE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482450940251:android:f85cd3498f68aebc",
+        "android_client_info": {
+          "package_name": "com.example.davidjusten.empower_nutrition_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482450940251-8v83mbo8heee90ovuncudgg5k95kfa3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.davidjusten.empower_nutrition_client",
+            "certificate_hash": "bd08e938cc3490a5e7b1270d4e9858ce3507364e"
+          }
+        },
+        {
+          "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEab7b4eBagGRv2-2Rf_jnU7f9gq5m-OE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482450940251-5kgftbpkupoag4srcjaq5ka3d6h0td4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

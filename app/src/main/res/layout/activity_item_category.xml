@@ -1,62 +1,15 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/empower_bg_v"
+    android:orientation="vertical"
     tools:context="com.example.davidjusten.empower_nutrition_client.ItemCategoryActivity">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_smoothies"
-        android:layout_width="162dp"
-        android:layout_height="160dp"
-        android:src="@drawable/smoothies"
-        android:onClick="smoothieClicked"
-        app:layout_constraintBottom_toTopOf="@+id/image_juice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/image_juice"
-        app:layout_constraintTop_toBottomOf="@+id/image_juice" />
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_juice"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/juices"
-        android:onClick="juiceClicked"
-        app:layout_constraintBottom_toTopOf="@+id/image_shot"
-        app:layout_constraintEnd_toStartOf="@+id/image_smoothies"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_shot"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/shots"
-        android:onClick="shotsClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/image_bowl"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_juice" />
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/image_bowl"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/rainbow_acai_bowl"
-        android:onClick="bowlsClicked"
-        app:layout_constraintBottom_toTopOf="@+id/image_shot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/image_shot"
-        app:layout_constraintTop_toBottomOf="@+id/image_shot" />
-
     <TextView
-        android:id="@+id/bowl_text"
-        android:layout_width="0dp"
+        android:id="@+id/image_juice_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginBottom="8dp"
@@ -64,20 +17,18 @@
         android:background="#99ffffff"
         android:fontFamily="casual"
         android:gravity="center"
+        android:onClick="juiceClicked"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="@string/bowls"
+        android:text="@string/juices"
         android:textColor="#004a86"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/image_bowl"
-        app:layout_constraintEnd_toEndOf="@+id/image_bowl"
-        app:layout_constraintStart_toStartOf="@+id/image_bowl"
-        app:layout_constraintTop_toTopOf="@+id/image_bowl" />
+         />
 
     <TextView
-        android:id="@+id/image_shot_text"
-        android:layout_width="0dp"
+        android:id="@+id/image_smoothie_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginBottom="8dp"
@@ -85,6 +36,29 @@
         android:background="#99ffffff"
         android:fontFamily="casual"
         android:gravity="center"
+        android:onClick="smoothieClicked"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Smoothies"
+        android:textColor="#004a86"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/image_smoothies"
+        app:layout_constraintEnd_toEndOf="@+id/image_smoothies"
+        app:layout_constraintStart_toStartOf="@+id/image_smoothies"
+        app:layout_constraintTop_toTopOf="@+id/image_smoothies" />
+
+    <TextView
+        android:id="@+id/image_shot_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#99ffffff"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:onClick="shotsClicked"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="@string/shots"
@@ -99,8 +73,8 @@
         app:layout_constraintVertical_bias="0.554" />
 
     <TextView
-        android:id="@+id/image_juice_text"
-        android:layout_width="0dp"
+        android:id="@+id/bowl_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginBottom="8dp"
@@ -108,36 +82,12 @@
         android:background="#99ffffff"
         android:fontFamily="casual"
         android:gravity="center"
+        android:onClick="bowlsClicked"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="@string/juices"
+        android:text="@string/bowls"
         android:textColor="#004a86"
         android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/image_juice"
-        app:layout_constraintEnd_toEndOf="@+id/image_juice"
-        app:layout_constraintStart_toStartOf="@+id/image_juice"
-        app:layout_constraintTop_toTopOf="@+id/image_juice" />
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/image_smoothie_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#99ffffff"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="Smoothies"
-        android:textColor="#004a86"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/image_smoothies"
-        app:layout_constraintEnd_toEndOf="@+id/image_smoothies"
-        app:layout_constraintStart_toStartOf="@+id/image_smoothies"
-        app:layout_constraintTop_toTopOf="@+id/image_smoothies" />
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

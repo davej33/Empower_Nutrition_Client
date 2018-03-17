@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.davidjusten.empower_nutrition_client.OrderReviewActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/order_review_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp" />
+
+    <TextView
+        android:id="@+id/order_review_pretax_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        tools:text="$10.00" />
+
+    <TextView
+        android:id="@+id/order_review_tax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        tools:text="$5.00" />
+
+    <TextView
+        android:id="@+id/order_review_total_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        tools:text="$15.00" />
+
+    <Button
+        android:id="@+id/makePurchase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order" />
+
+    <Button
+        android:id="@+id/addItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Items" />
+
+    <Button
+        android:id="@+id/cancelPurchase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+</LinearLayout>
