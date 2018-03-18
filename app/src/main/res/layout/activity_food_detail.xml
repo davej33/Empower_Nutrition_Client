@@ -3,55 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/empower_bg_v"
     android:layout_height="match_parent"
+    android:background="@drawable/empower_bg_v"
+    android:orientation="vertical"
+    android:id="@+id/food_detail_layout"
     tools:context="com.example.davidjusten.empower_nutrition_client.FoodDetailActivity">
 
     <ImageView
         android:id="@+id/detailImageView"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:src="@drawable/beet_shot"/>
+        android:src="@drawable/beet_shot" />
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#aaffffff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/detailName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="Beet Juice"/>
-    <TextView
-        android:id="@+id/detailDesc"
-        android:textSize="20sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:text="Taste like Beet Juice"/>
-    <TextView
-        android:id="@+id/detailPrice"
-        android:textSize="20sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="$5"/>
-    <TextView
-        android:textSize="20sp"
-        android:id="@+id/detailQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Quantity: 1"/>
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/detailName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Beet Juice"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detailDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Taste like Beet Juice"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/detailPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$5"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/detailQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quantity: 1"
+            android:textSize="20sp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/detailPurchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Purchase"
         android:onClick="purchaseItemClicked"
-        />
+        android:text="Purchase" />
 </LinearLayout>

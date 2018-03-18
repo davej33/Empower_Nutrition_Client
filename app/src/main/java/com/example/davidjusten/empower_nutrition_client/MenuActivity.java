@@ -44,6 +44,8 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Food, FoodViewHolder> mAdapter;
     private String mType;
 
+    private static Food mFoodItem;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,8 @@ public class MenuActivity extends AppCompatActivity {
                 .build();
         mAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull Food model) {
+            protected void onBindViewHolder(@NonNull FoodViewHolder holder, int position, @NonNull final Food model) {
+
                 holder.setDesc(model.getDesc());
                 Log.i("This", "desc check: " + model.getDesc());
                 holder.setName(model.getName());
@@ -91,6 +94,7 @@ public class MenuActivity extends AppCompatActivity {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mFoodItem = model;
                         Intent detailIntent = new Intent(MenuActivity.this, FoodDetailActivity.class);
                         detailIntent.putExtra("ItemId", item_key);
                         startActivity(detailIntent);
@@ -130,6 +134,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAdapter.stopListening();
+    }
+
+    public static Food getFoodItem() {
+        return mFoodItem;
     }
 
     public static class FoodViewHolder extends RecyclerView.ViewHolder {

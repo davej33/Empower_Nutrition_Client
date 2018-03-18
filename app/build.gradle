@@ -41,5 +41,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
     implementation 'com.firebaseui:firebase-ui-auth:3.2.2'
+
+
+    // Stripe
+//    compile 'com.stripe:stripe-android:5.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

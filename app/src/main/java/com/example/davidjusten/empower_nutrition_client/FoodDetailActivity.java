@@ -1,15 +1,24 @@
 package com.example.davidjusten.empower_nutrition_client;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +51,11 @@ public class FoodDetailActivity extends AppCompatActivity {
     private FirebaseUser current_user;
     private DatabaseReference user_data, mRef;
     private String food_name, food_desc, food_image, food_price;
+    private PopupWindow mPopUpWindow;
+    private View mPopUpView;
+    private LayoutInflater mLayoutInflater;
+    private LinearLayout mLayout;
+    private Food mCurrentFoodItem;
 
 
     @Override
@@ -57,6 +71,8 @@ public class FoodDetailActivity extends AppCompatActivity {
         mDetailPrice = findViewById(R.id.detailPrice);
         mDetailImage = findViewById(R.id.detailImageView);
 
+        mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        mLayout = findViewById(R.id.food_detail_layout);
         mAuth = FirebaseAuth.getInstance();
 
         // get current user
@@ -89,26 +105,81 @@ public class FoodDetailActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 
     public void purchaseItemClicked(View view) {
+        // show pop-up
+        showPurchaseConfirmationPopUp(view);
+
+    }
+
+
+    private Object timeOrdered() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd @ hh:mm", Locale.US);
+        return df.format(cal.getTime());
+
+    }
+
+    private void showPurchaseConfirmationPopUp(View view) {
+
+        mPopUpView = mLayoutInflater.inflate(R.layout.popup_add_item_confirmation, (ViewGroup) view.getRootView(), false);
+        mPopUpWindow = new PopupWindow(mPopUpView,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                true
+        );
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            mPopUpWindow.setElevation(5.0f);
+        }
+
+        // show the popup
+        mPopUpWindow.showAtLocation(mLayout, Gravity.CENTER, 0, 0);
+
+        // dim popup background
+        dimBehind(mPopUpWindow);
+    }
+
+    public static void dimBehind(PopupWindow popupWindow) {
+        View container = popupWindow.getContentView().getRootView();
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.7f;
+        wm.updateViewLayout(container, p);
+    }
+
+    public void addItemConfClicked(View view) {
+
+        mPopUpView = mLayoutInflater.inflate(R.layout.popup_item_added, (ViewGroup) view.getRootView(), false);
+        mPopUpWindow.dismiss();
+        mPopUpWindow = new PopupWindow(mPopUpView,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                true);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            mPopUpWindow.setElevation(5.0f);
+        }
+
+        // show the popup
+        mPopUpWindow.showAtLocation(mLayout, Gravity.CENTER, 0, 0);
+
+        // dim popup background
+        dimBehind(mPopUpWindow);
+
         final DatabaseReference newOrder = mRef.push();
         user_data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("tag", "datasnapshot: " + dataSnapshot.child("Name").getValue());
-                newOrder.child("itemName").setValue(food_name);
-                newOrder.child("time").setValue(timeOrdered());
-                newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
-                        new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                startActivity(new Intent(FoodDetailActivity.this, ItemCategoryActivity.class));
-                            }
-                        }
-                );
+
+//                Log.i("tag", "datasnapshot: " + dataSnapshot.child("Name").getValue());
+//Todo: pass Food Item to Order
+
+                OrderReviewActivity.addItemToCart(MenuActivity.getFoodItem());
             }
 
             @Override
@@ -118,10 +189,11 @@ public class FoodDetailActivity extends AppCompatActivity {
         });
     }
 
-    private Object timeOrdered() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd @ hh:mm", Locale.US);
-        return df.format(cal.getTime());
+    public void backToMenuClicked(View view) {
+        startActivity(new Intent(FoodDetailActivity.this, ItemCategoryActivity.class));
 
+    }
+
+    public void checkoutClicked(View view) {
     }
 }

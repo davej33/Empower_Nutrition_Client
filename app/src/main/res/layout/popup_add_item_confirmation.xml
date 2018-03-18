@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#818181"
+    android:orientation="vertical"
+    android:padding="36dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to order?"
+        android:gravity="center_horizontal"
+        android:textSize="28dp" />
+
+    <TextView
+        android:id="@+id/add_item_popup_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/strawberry_banana_smoothie"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/add_item_popup_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Not Yet" />
+
+    <Button
+        android:id="@+id/add_item_popup_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addItemConfClicked"
+        android:text="Do it!" />
+</LinearLayout>
