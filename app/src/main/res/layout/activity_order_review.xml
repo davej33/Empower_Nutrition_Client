@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.davidjusten.empower_nutrition_client.OrderReviewActivity">
+    tools:context="com.example.davidjusten.empower_nutrition_client.OrderSummaryActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/order_review_summary"
@@ -36,12 +36,14 @@
 
     <Button
         android:id="@+id/makePurchase"
+        android:onClick="orderClicked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Order" />
 
     <Button
         android:id="@+id/addItems"
+        android:onClick="addItemsClicked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Items" />
@@ -50,5 +52,6 @@
         android:id="@+id/cancelPurchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="cancelClicked"
         android:text="Cancel" />
 </LinearLayout>

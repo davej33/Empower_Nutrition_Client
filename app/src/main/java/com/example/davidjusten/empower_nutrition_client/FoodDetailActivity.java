@@ -3,28 +3,20 @@ package com.example.davidjusten.empower_nutrition_client;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.davidjusten.empower_nutrition_client.adapters.OrderSummaryAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class FoodDetailActivity extends AppCompatActivity {
@@ -176,10 +166,8 @@ public class FoodDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-//                Log.i("tag", "datasnapshot: " + dataSnapshot.child("Name").getValue());
-//Todo: pass Food Item to Order
-
-                OrderReviewActivity.addItemToCart(MenuActivity.getFoodItem());
+                OrderSummaryAdapter.addItemToCart(MenuActivity.getFoodItem());
+                OrderSummaryActivity.updateAdapater();
             }
 
             @Override
@@ -195,5 +183,6 @@ public class FoodDetailActivity extends AppCompatActivity {
     }
 
     public void checkoutClicked(View view) {
+        startActivity(new Intent(FoodDetailActivity.this, OrderSummaryActivity.class));
     }
 }
