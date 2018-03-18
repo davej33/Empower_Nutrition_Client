@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#818181"
+    android:orientation="vertical"
+    android:padding="36dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Thank you for being a loyal Empower Nutrition customer! Your order has been sent! "
+        android:textSize="28sp" />
+
+    <Button
+        android:id="@+id/thank_you_main_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="mainMenuClicked"
+        android:text="Main Menu"
+        android:layout_marginTop="16dp"/>
+
+
+</LinearLayout>

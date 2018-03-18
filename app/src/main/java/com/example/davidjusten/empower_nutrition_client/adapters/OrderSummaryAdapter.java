@@ -54,6 +54,10 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
         Log.i(LOG_TAG, "Order List ----------- " + mOrderList.size());
     }
 
+    public static List<Food> getOrderList() {
+        return mOrderList;
+    }
+
 
     public class OrderSummaryViewHolder extends RecyclerView.ViewHolder {
 
@@ -71,4 +75,6 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
             quantity = itemView.findViewById(R.id.order_item_quantity);
         }
     }
+
+
 }

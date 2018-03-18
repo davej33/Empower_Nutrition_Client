@@ -105,12 +105,7 @@ public class FoodDetailActivity extends AppCompatActivity {
     }
 
 
-    private Object timeOrdered() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd @ hh:mm", Locale.US);
-        return df.format(cal.getTime());
 
-    }
 
     private void showPurchaseConfirmationPopUp(View view) {
 
