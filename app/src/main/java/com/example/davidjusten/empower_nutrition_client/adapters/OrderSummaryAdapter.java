@@ -23,6 +23,13 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
     private static final String LOG_TAG = OrderSummaryAdapter.class.getSimpleName();
     private static List<Food> mOrderList;
 
+    public static void setQuantity(int quantity) {
+        int i = mOrderList.size();
+        Food f = mOrderList.get(i-1);
+        f.setQuantity(quantity);
+        Log.i(LOG_TAG,"Food quantity = " + f.getQuantity());
+    }
+
     @NonNull
     @Override
     public OrderSummaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,7 +43,11 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
 
         holder.name.setText(item.getName());
         holder.cost.setText(item.getPrice());
-//        holder.quantity.setText(item.getName());
+        holder.quantity.setText(String.valueOf(item.getQuantity()));
+
+        double price = Double.valueOf(item.getPrice());
+        double totalItemCost = price * item.getQuantity();
+        holder.totalCost.setText(String.valueOf(totalItemCost));
     }
 
     @Override
@@ -65,6 +76,7 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
         TextView name;
         TextView cost;
         TextView quantity;
+        TextView totalCost;
 
         public OrderSummaryViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +85,7 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
             name = itemView.findViewById(R.id.order_item_name);
             cost = itemView.findViewById(R.id.order_item_cost);
             quantity = itemView.findViewById(R.id.order_item_quantity);
+            totalCost = itemView.findViewById(R.id.total_cost);
         }
     }
 

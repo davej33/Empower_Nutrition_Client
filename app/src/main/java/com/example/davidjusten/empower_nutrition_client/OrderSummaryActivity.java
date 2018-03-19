@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,18 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.davidjusten.empower_nutrition_client.adapters.OrderSummaryAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,11 +42,18 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private RecyclerView mSummaryRV;
     private static OrderSummaryAdapter mAdapter;
 
+    private Integer orderId;
+    private TextView mPreTax;
+    private TextView mTax;
+    private TextView mTotalCost;
+
     // popup vars
     private PopupWindow mPopupWindow;
     private View mPopupView;
     private LayoutInflater mLayouInflater;
     private LinearLayout mActivityLayout;
+    private double mPreTaxCosts;
+    private double mTaxCalc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +68,26 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mLayouInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mActivityLayout = findViewById(R.id.order_summary_layout);
 
+        // cost views
+        mPreTax = findViewById(R.id.order_review_pretax_cost);
+        mTax = findViewById(R.id.order_review_tax);
+        mTotalCost = findViewById(R.id.order_review_total_cost);
 
+        // cost calcs
+        mPreTax.setText(calculatePreTaxCosts());
+        mTaxCalc = mPreTaxCosts * .065;
+        mTax.setText(String.valueOf(mTaxCalc));
+        mTotalCost.setText(String.valueOf(mPreTaxCosts + mTaxCalc));
+    }
+
+    private String calculatePreTaxCosts() {
+        List<Food> list = OrderSummaryAdapter.getOrderList();
+        mPreTaxCosts = 0;
+        for (Food f : list) {
+            mPreTaxCosts += f.getQuantity() * Double.valueOf(f.getPrice());
+            Log.i(LOG_TAG, "pretax cost: " + mPreTaxCosts);
+        }
+        return String.valueOf(mPreTaxCosts);
     }
 
     public static void updateAdapater() {
@@ -99,11 +130,31 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     public void orderConfirmationClicked(View view) {
         DatabaseReference newOrder = FirebaseDatabase.getInstance().getReference().child("Orders").push();
-        List orderedItems = OrderSummaryAdapter.getOrderList();
+        List<Food> orderedItems = OrderSummaryAdapter.getOrderList();
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // get order id
+        final DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
+        orderIdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                orderId = (Integer) dataSnapshot.getValue();
+                Log.i(LOG_TAG, "order_id: ========== " + orderId);
+            }
 
-        Food itemOrdered = (Food) orderedItems.get(0);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        // create order id child in orders
+        DatabaseReference orderIdRefChild = newOrder.child(orderId.toString());
+
+        // save order items to hash map
+
+        // push hashmap to db
+
+        Food itemOrdered = orderedItems.get(0);
         newOrder.child("itemName").setValue(itemOrdered.getName());
         newOrder.child("time").setValue(timeOrdered());
         newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(

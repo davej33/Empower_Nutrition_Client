@@ -12,17 +12,17 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/popup_item_added_backToMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back to Menu"
-        android:onClick="backToMenuClicked"/>
     <Button
         android:id="@+id/popup_item_added_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Checkout"
         android:onClick="checkoutClicked"/>
+    <Button
+        android:id="@+id/popup_item_added_backToMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to Menu"
+        android:onClick="backToMenuClicked"/>
+
 </LinearLayout>

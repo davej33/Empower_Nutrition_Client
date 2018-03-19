@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -156,13 +157,16 @@ public class FoodDetailActivity extends AppCompatActivity {
         // dim popup background
         dimBehind(mPopUpWindow);
 
-        final DatabaseReference newOrder = mRef.push();
         user_data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                EditText quantity = findViewById(R.id.detailQuantity);
+                String s = quantity.getText().toString().trim();
+                int i = Integer.valueOf(s);
 
                 OrderSummaryAdapter.addItemToCart(MenuActivity.getFoodItem());
                 OrderSummaryActivity.updateAdapater();
+                OrderSummaryAdapter.setQuantity(i);
             }
 
             @Override

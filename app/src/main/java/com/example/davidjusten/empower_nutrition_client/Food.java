@@ -8,17 +8,18 @@ public class Food {
 
     private String mName, mPrice, mDesc, mImage;
     private String mType;
-    // int quantity
+    private int mQuantity;
 
     public Food() {
     }
 
-    public Food(String name, String price, String desc, String image, String type) {
+    public Food(String name, String price, String desc, int quantity, String image, String type) {
         mName = name;
         mPrice = price;
         mDesc = desc;
         mImage = image;
         mType = type;
+        mQuantity = quantity;
 
     }
 
@@ -60,5 +61,13 @@ public class Food {
 
     public void setType(String mType) {
         this.mType = mType;
+    }
+
+    public int getQuantity() {
+        return mQuantity;
+    }
+
+    public void setQuantity(int mQuantity) {
+        this.mQuantity = mQuantity;
     }
 }
