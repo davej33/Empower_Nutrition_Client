@@ -47,7 +47,7 @@ public class ItemCategoryActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     // signed in
-                    Toast.makeText(ItemCategoryActivity.this, "You're signed in!", Toast.LENGTH_SHORT).show();
+
                 } else {
                     // not signed in
                     startActivityForResult(
@@ -63,6 +63,10 @@ public class ItemCategoryActivity extends AppCompatActivity {
             }
         };
 
+
+    }
+
+    public static void retrieveOrderId() {
         DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
         orderIdRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,7 +88,9 @@ public class ItemCategoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAuth.addAuthStateListener(mAuthStateListener);
-        Log.i("tag", "is this running?????????????????????? ");
+        retrieveOrderId();
+        Log.i(LOG_TAG, "order onResume run: " + mOrderID);
+
     }
 
     @Override

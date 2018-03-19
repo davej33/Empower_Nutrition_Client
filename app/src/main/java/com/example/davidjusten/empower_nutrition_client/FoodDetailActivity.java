@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import java.util.Locale;
 public class FoodDetailActivity extends AppCompatActivity {
 
 
+    private static final String LOG_TAG = FoodDetailActivity.class.getSimpleName();
     private String item_key = null;
     private DatabaseReference mDb;
     private TextView mDetailName, mDetailPrice, mDetailDesc;
@@ -47,6 +49,7 @@ public class FoodDetailActivity extends AppCompatActivity {
     private LayoutInflater mLayoutInflater;
     private LinearLayout mLayout;
     private Food mCurrentFoodItem;
+    private String mOrderID;
 
 
     @Override
@@ -96,6 +99,8 @@ public class FoodDetailActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
 

@@ -153,17 +153,19 @@ public class OrderSummaryActivity extends AppCompatActivity {
         orderIdRefChild.setValue(orderedItems);
 
         showThankYouPopup();
-
-        // updated order number
         updateOrderNumber(orderIdRef);
+        OrderSummaryAdapter.clearOrderItems();
     }
 
+
     private void updateOrderNumber(DatabaseReference orderIdRef) {
+        Log.i(LOG_TAG, "order id: " + mOrderId);
+        if (mOrderId == null) ItemCategoryActivity.retrieveOrderId();
         int i = Integer.valueOf(mOrderId);
         int newID = ++i;
         String newIdString = String.valueOf(newID);
         orderIdRef.setValue(newIdString);
-        Log.i(LOG_TAG,"new id: " + newIdString);
+        Log.i(LOG_TAG, "new id: " + newIdString);
     }
 
     private void showThankYouPopup() {
@@ -195,6 +197,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     public static void setOrderId(String orderId) {
-       mOrderId = orderId;
+        mOrderId = orderId;
     }
 }

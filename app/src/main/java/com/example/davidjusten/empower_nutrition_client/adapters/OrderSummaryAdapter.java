@@ -69,6 +69,10 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
         return mOrderList;
     }
 
+    public static void clearOrderItems() {
+        mOrderList.clear();
+    }
+
 
     public class OrderSummaryViewHolder extends RecyclerView.ViewHolder {
 
