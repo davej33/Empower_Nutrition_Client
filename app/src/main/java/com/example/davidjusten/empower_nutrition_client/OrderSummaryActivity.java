@@ -3,7 +3,6 @@ package com.example.davidjusten.empower_nutrition_client;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,15 +19,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.davidjusten.empower_nutrition_client.adapters.OrderSummaryAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,10 +33,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = OrderSummaryActivity.class.getSimpleName();
 
-    private RecyclerView mSummaryRV;
+    private static RecyclerView mSummaryRV;
     private static OrderSummaryAdapter mAdapter;
 
-    private Integer orderId;
+    private static String mOrderId;
     private TextView mPreTax;
     private TextView mTax;
     private TextView mTotalCost;
@@ -50,7 +44,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     // popup vars
     private PopupWindow mPopupWindow;
     private View mPopupView;
-    private LayoutInflater mLayouInflater;
+    private LayoutInflater mLayoutInflater;
     private LinearLayout mActivityLayout;
     private double mPreTaxCosts;
     private double mTaxCalc;
@@ -65,7 +59,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mSummaryRV.setLayoutManager(new LinearLayoutManager(this));
         mSummaryRV.setAdapter(mAdapter);
 
-        mLayouInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mActivityLayout = findViewById(R.id.order_summary_layout);
 
         // cost views
@@ -103,7 +97,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     public void orderClicked(View view) {
-        mPopupView = mLayouInflater.inflate(R.layout.popup_order_confirmation, (ViewGroup) view.getRootView(), false);
+        mPopupView = mLayoutInflater.inflate(R.layout.popup_order_confirmation, (ViewGroup) view.getRootView(), false);
         mPopupWindow = new PopupWindow(mPopupView,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -129,55 +123,64 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     public void orderConfirmationClicked(View view) {
-        DatabaseReference newOrder = FirebaseDatabase.getInstance().getReference().child("Orders").push();
+        DatabaseReference newOrder = FirebaseDatabase.getInstance().getReference().child("Orders");
+        DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
         List<Food> orderedItems = OrderSummaryAdapter.getOrderList();
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
 
+
         // get order id
-        final DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
-        orderIdRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                orderId = (Integer) dataSnapshot.getValue();
-                Log.i(LOG_TAG, "order_id: ========== " + orderId);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        final DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
+//        orderIdRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                orderId = (Integer) dataSnapshot.getValue();
+//                Log.i(LOG_TAG, "order_id: ========== " + orderId);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         // create order id child in orders
-        DatabaseReference orderIdRefChild = newOrder.child(orderId.toString());
 
-        // save order items to hash map
 
-        // push hashmap to db
+        String orderId = "new_order_" + String.valueOf(mOrderId);
+        DatabaseReference orderIdRefChild = newOrder.child(orderId);
 
-        Food itemOrdered = orderedItems.get(0);
-        newOrder.child("itemName").setValue(itemOrdered.getName());
-        newOrder.child("time").setValue(timeOrdered());
-        newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mPopupWindow.dismiss();
-                        mPopupView = mLayouInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
-                        mPopupWindow = new PopupWindow(mPopupView,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                true);
+        // save order items to db
+        orderIdRefChild.setValue(orderedItems);
 
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            mPopupWindow.setElevation(5.0f);
-                        }
+        showThankYouPopup();
 
-                        mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
+        // updated order number
+        updateOrderNumber(orderIdRef);
+    }
 
-                        dimBehind(mPopupWindow);
-                    }
-                }
-        );
+    private void updateOrderNumber(DatabaseReference orderIdRef) {
+        int i = Integer.valueOf(mOrderId);
+        int newID = ++i;
+        String newIdString = String.valueOf(newID);
+        orderIdRef.setValue(newIdString);
+        Log.i(LOG_TAG,"new id: " + newIdString);
+    }
+
+    private void showThankYouPopup() {
+        mPopupWindow.dismiss();
+        mPopupView = mLayoutInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
+        mPopupWindow = new PopupWindow(mPopupView,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                true);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            mPopupWindow.setElevation(5.0f);
+        }
+
+        mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
+
+        dimBehind(mPopupWindow);
     }
 
     private Object timeOrdered() {
@@ -191,9 +194,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         startActivity(new Intent(OrderSummaryActivity.this, ItemCategoryActivity.class));
     }
 
-    public void closeClicked(View view) {
-
-        this.finish();
-        System.exit(0);
+    public static void setOrderId(String orderId) {
+       mOrderId = orderId;
     }
 }
