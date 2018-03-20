@@ -53,15 +53,12 @@ public class FoodDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
+        mCurrentFoodItem = MenuActivity.getFoodItem();
 
-        item_key = getIntent().getExtras().getString("ItemId");
+//        item_key = getIntent().getExtras().getString("ItemId");
         mDb = FirebaseDatabase.getInstance().getReference().child("Item");
 
-        mDetailName = findViewById(R.id.detailName);
-        mDetailDesc = findViewById(R.id.detailDesc);
-        mDetailPrice = findViewById(R.id.detailPrice);
-        mDetailImage = findViewById(R.id.detailImageView);
-
+        // supporting objects
         mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mLayout = findViewById(R.id.food_detail_layout);
         mAuth = FirebaseAuth.getInstance();
@@ -70,32 +67,50 @@ public class FoodDetailActivity extends AppCompatActivity {
         current_user = mAuth.getCurrentUser();
         user_data = FirebaseDatabase.getInstance().getReference().child(current_user.getUid());
 
-        //extract data
-        mDb.child(item_key).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                food_name = (String) dataSnapshot.child("name").getValue();
-                food_desc = (String) dataSnapshot.child("desc").getValue();
-                food_price = (String) dataSnapshot.child("price").getValue();
-                food_image = (String) dataSnapshot.child("image").getValue();
 
-                mDetailName.setText(food_name);
-                mDetailDesc.setText(food_desc);
-                mDetailPrice.setText(food_price);
-                Picasso.get()
-                        .load(food_image)
+        // get ui views
+        mDetailName = findViewById(R.id.detailName);
+        mDetailDesc = findViewById(R.id.detailDesc);
+        mDetailPrice = findViewById(R.id.detailPrice);
+        mDetailImage = findViewById(R.id.detailImageView);
+
+        // set views
+        mDetailName.setText(mCurrentFoodItem.getName());
+        mDetailDesc.setText(mCurrentFoodItem.getDesc());
+        mDetailPrice.setText(mCurrentFoodItem.getPrice());
+        Picasso.get().load(food_image)
 //                    .placeholder(R.drawable.user_placeholder)
 //                    .error(R.drawable.user_placeholder_error)
-                        .into(mDetailImage);
+                .into(mDetailImage);
 
-                mRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+        //extract data
+//        mDb.child(item_key).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                food_name = (String) dataSnapshot.child("name").getValue();
+//                food_desc = (String) dataSnapshot.child("desc").getValue();
+//                food_price = (String) dataSnapshot.child("price").getValue();
+//                food_image = (String) dataSnapshot.child("image").getValue();
+//
+//                mDetailName.setText(food_name);
+//                mDetailDesc.setText(food_desc);
+//                mDetailPrice.setText(food_price);
+//                Picasso.get()
+//                        .load(food_image)
+////                    .placeholder(R.drawable.user_placeholder)
+////                    .error(R.drawable.user_placeholder_error)
+//                        .into(mDetailImage);
+//
+//                mRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 
@@ -163,10 +178,10 @@ public class FoodDetailActivity extends AppCompatActivity {
                 EditText quantity = findViewById(R.id.detailQuantity);
                 String s = quantity.getText().toString().trim();
                 int i = Integer.valueOf(s);
+                mCurrentFoodItem.setQuantity(i);
 
                 OrderSummaryAdapter.addItemToCart(MenuActivity.getFoodItem());
                 OrderSummaryActivity.updateAdapater();
-                OrderSummaryAdapter.setQuantity(i);
             }
 
             @Override

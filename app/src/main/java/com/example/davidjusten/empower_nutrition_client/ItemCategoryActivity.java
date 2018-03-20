@@ -10,11 +10,17 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
 public class ItemCategoryActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = ItemCategoryActivity.class.getSimpleName();
     private static final String SMOOTHIE = "Smoothie";
     private static final String SHOT = "Shot";
     private static final String BOWL = "Bowl";
@@ -24,7 +30,7 @@ public class ItemCategoryActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private static final int RC_SIGN_IN = 1;
-
+    private Integer mOrderId;
 
 
     @Override
@@ -61,7 +67,6 @@ public class ItemCategoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAuth.addAuthStateListener(mAuthStateListener);
-        Log.i("tag", "is this running?????????????????????? ");
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Food {
     private String mName, mPrice, mDesc, mImage;
     private String mType;
     private int mQuantity;
+    private String mOrderID;
 
     public Food() {
     }

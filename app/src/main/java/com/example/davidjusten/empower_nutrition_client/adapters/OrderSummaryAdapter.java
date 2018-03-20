@@ -23,13 +23,6 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
     private static final String LOG_TAG = OrderSummaryAdapter.class.getSimpleName();
     private static List<Food> mOrderList;
 
-    public static void setQuantity(int quantity) {
-        int i = mOrderList.size();
-        Food f = mOrderList.get(i-1);
-        f.setQuantity(quantity);
-        Log.i(LOG_TAG,"Food quantity = " + f.getQuantity());
-    }
-
     @NonNull
     @Override
     public OrderSummaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

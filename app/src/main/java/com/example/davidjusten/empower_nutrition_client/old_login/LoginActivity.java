@@ -1,7 +1,6 @@
-package com.example.davidjusten.empower_nutrition_client;
+package com.example.davidjusten.empower_nutrition_client.old_login;
 
 import android.content.Intent;
-import android.sax.TextElementListener;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.davidjusten.empower_nutrition_client.ItemCategoryActivity;
+import com.example.davidjusten.empower_nutrition_client.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

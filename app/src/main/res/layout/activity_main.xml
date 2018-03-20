@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.davidjusten.empower_nutrition_client.MainActivity">
+    tools:context="com.example.davidjusten.empower_nutrition_client.old_login.MainActivity">
 
     <TextView
         android:layout_width="match_parent"

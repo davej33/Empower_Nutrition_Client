@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.transition.Transition;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private TextView mPreTax;
     private TextView mTax;
     private TextView mTotalCost;
+    private String mOrderID;
 
     // popup vars
     private PopupWindow mPopupWindow;
@@ -54,6 +56,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private LinearLayout mActivityLayout;
     private double mPreTaxCosts;
     private double mTaxCalc;
+    private int mIdInt;
+    private DatabaseReference newOrder;
+    private List<Food> orderedItems;
+    private FirebaseUser current_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,17 +135,51 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     public void orderConfirmationClicked(View view) {
-        DatabaseReference newOrder = FirebaseDatabase.getInstance().getReference().child("Orders").push();
-        List<Food> orderedItems = OrderSummaryAdapter.getOrderList();
-        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        newOrder = FirebaseDatabase.getInstance().getReference().child("Orders").push();
+        orderedItems = OrderSummaryAdapter.getOrderList();
+        current_user = FirebaseAuth.getInstance().getCurrentUser();
 
         // get order id
         final DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
-        orderIdRef.addValueEventListener(new ValueEventListener() {
+        orderIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                orderId = (Integer) dataSnapshot.getValue();
-                Log.i(LOG_TAG, "order_id: ========== " + orderId);
+                String mOrderID = dataSnapshot.getValue().toString();
+                Log.i(LOG_TAG, "order id: " + mOrderID);
+                mIdInt = (Integer.valueOf(mOrderID)) + 1;
+                orderIdRef.setValue(mIdInt);
+                Log.i(LOG_TAG, "order id: " + mIdInt);
+
+                Food itemOrdered;
+                for (int i = 0; i < orderedItems.size(); i++) {
+                    itemOrdered = orderedItems.get(i);
+                    newOrder.child("itemName").setValue(itemOrdered.getName());
+                    newOrder.child("time").setValue(timeOrdered());
+                    newOrder.child("quant").setValue(itemOrdered.getQuantity());
+                    Log.i(LOG_TAG, "orderId: " + mIdInt);
+                    newOrder.child("orderId").setValue(mIdInt);
+                    newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
+                            new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    mPopupWindow.dismiss();
+                                    mPopupView = mLayouInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
+                                    mPopupWindow = new PopupWindow(mPopupView,
+                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                            true);
+
+                                    if (Build.VERSION.SDK_INT >= 21) {
+                                        mPopupWindow.setElevation(5.0f);
+                                    }
+
+                                    mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
+
+                                    dimBehind(mPopupWindow);
+                                }
+                            }
+                    );
+                }
             }
 
             @Override
@@ -147,37 +187,32 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
             }
         });
+
+//        // get order id
+//        final DatabaseReference orderIdRef = FirebaseDatabase.getInstance().getReference().child("order_id");
+//        orderIdRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                orderId = (Integer) dataSnapshot.getValue();
+//                Log.i(LOG_TAG, "order_id: ========== " + orderId);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         // create order id child in orders
-        DatabaseReference orderIdRefChild = newOrder.child(orderId.toString());
+//        DatabaseReference orderIdRefChild = newOrder.child(orderId.toString());
 
         // save order items to hash map
 
         // push hashmap to db
-
-        Food itemOrdered = orderedItems.get(0);
-        newOrder.child("itemName").setValue(itemOrdered.getName());
-        newOrder.child("time").setValue(timeOrdered());
-        newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mPopupWindow.dismiss();
-                        mPopupView = mLayouInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
-                        mPopupWindow = new PopupWindow(mPopupView,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                true);
-
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            mPopupWindow.setElevation(5.0f);
-                        }
-
-                        mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
-
-                        dimBehind(mPopupWindow);
-                    }
-                }
-        );
+//        int count = 0;
+//        while (mIdInt == 0) {
+//            Log.i(LOG_TAG, "count: " + count++);
+//        }
+       
     }
 
     private Object timeOrdered() {
@@ -191,9 +226,4 @@ public class OrderSummaryActivity extends AppCompatActivity {
         startActivity(new Intent(OrderSummaryActivity.this, ItemCategoryActivity.class));
     }
 
-    public void closeClicked(View view) {
-
-        this.finish();
-        System.exit(0);
-    }
 }
