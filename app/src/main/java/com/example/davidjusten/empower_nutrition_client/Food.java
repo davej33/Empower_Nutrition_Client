@@ -6,10 +6,11 @@ package com.example.davidjusten.empower_nutrition_client;
 
 public class Food {
 
-    private String mName, mPrice, mDesc, mImage;
+    private String mName, mPrice, mDesc, mImage, mUser;
     private String mType;
     private int mQuantity;
     private String mOrderID;
+    private String mTime;
 
     public Food() {
     }
@@ -70,5 +71,29 @@ public class Food {
 
     public void setQuantity(int mQuantity) {
         this.mQuantity = mQuantity;
+    }
+
+    public String getOrderID() {
+        return mOrderID;
+    }
+
+    public void setOrderID(String mOrderID) {
+        this.mOrderID = mOrderID;
+    }
+
+    public String getTime() {
+        return mTime;
+    }
+
+    public void setTime(String mTime) {
+        this.mTime = mTime;
+    }
+
+    public String getUser() {
+        return mUser;
+    }
+
+    public void setUser(String mUser) {
+        this.mUser = mUser;
     }
 }

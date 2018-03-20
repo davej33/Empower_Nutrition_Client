@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidjusten.empower_nutrition_client.Food;
+import com.example.davidjusten.empower_nutrition_client.OrderSummaryActivity;
 import com.example.davidjusten.empower_nutrition_client.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
 
         double price = Double.valueOf(item.getPrice());
         double totalItemCost = price * item.getQuantity();
-        holder.totalCost.setText(String.valueOf(totalItemCost));
+        holder.totalCost.setText(convertToCurrency(totalItemCost));
     }
 
     @Override
@@ -51,15 +53,22 @@ public class OrderSummaryAdapter extends RecyclerView.Adapter<OrderSummaryAdapte
             return 0;
         }
     }
+    private String convertToCurrency(double mPreTaxCosts) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(mPreTaxCosts);
 
+    }
     public static void addItemToCart(Food foodItem) {
         if (mOrderList == null) mOrderList = new ArrayList<>();
         mOrderList.add(foodItem);
-        Log.i(LOG_TAG, "Order List ----------- " + mOrderList.size());
     }
 
     public static List<Food> getOrderList() {
         return mOrderList;
+    }
+
+    public static void clearAdapter() {
+        mOrderList.clear();
     }
 
 

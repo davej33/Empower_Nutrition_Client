@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -82,8 +83,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
         // cost calcs
         mPreTax.setText(calculatePreTaxCosts());
         mTaxCalc = mPreTaxCosts * .065;
-        mTax.setText(String.valueOf(mTaxCalc));
-        mTotalCost.setText(String.valueOf(mPreTaxCosts + mTaxCalc));
+        mTax.setText(convertToCurrency(mTaxCalc));
+        mTotalCost.setText(convertToCurrency(mPreTaxCosts + mTaxCalc));
     }
 
     private String calculatePreTaxCosts() {
@@ -91,9 +92,15 @@ public class OrderSummaryActivity extends AppCompatActivity {
         mPreTaxCosts = 0;
         for (Food f : list) {
             mPreTaxCosts += f.getQuantity() * Double.valueOf(f.getPrice());
-            Log.i(LOG_TAG, "pretax cost: " + mPreTaxCosts);
+
         }
-        return String.valueOf(mPreTaxCosts);
+        return convertToCurrency(mPreTaxCosts);
+    }
+
+    private String convertToCurrency(double mPreTaxCosts) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(mPreTaxCosts);
+
     }
 
     public static void updateAdapater() {
@@ -144,42 +151,46 @@ public class OrderSummaryActivity extends AppCompatActivity {
         orderIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // get order id
                 String mOrderID = dataSnapshot.getValue().toString();
-                Log.i(LOG_TAG, "order id: " + mOrderID);
+
+                // update order id in db
                 mIdInt = (Integer.valueOf(mOrderID)) + 1;
                 orderIdRef.setValue(mIdInt);
-                Log.i(LOG_TAG, "order id: " + mIdInt);
 
-                Food itemOrdered;
-                for (int i = 0; i < orderedItems.size(); i++) {
-                    itemOrdered = orderedItems.get(i);
-                    newOrder.child("itemName").setValue(itemOrdered.getName());
-                    newOrder.child("time").setValue(timeOrdered());
-                    newOrder.child("quant").setValue(itemOrdered.getQuantity());
-                    Log.i(LOG_TAG, "orderId: " + mIdInt);
-                    newOrder.child("orderId").setValue(mIdInt);
-                    newOrder.child("userName").setValue(current_user.getEmail()).addOnCompleteListener(
-                            new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    mPopupWindow.dismiss();
-                                    mPopupView = mLayouInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
-                                    mPopupWindow = new PopupWindow(mPopupView,
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                            true);
-
-                                    if (Build.VERSION.SDK_INT >= 21) {
-                                        mPopupWindow.setElevation(5.0f);
-                                    }
-
-                                    mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
-
-                                    dimBehind(mPopupWindow);
-                                }
-                            }
-                    );
+                // set order data
+                for (Food f : orderedItems) {
+                    f.setOrderID(String.valueOf(mIdInt));
+                    f.setTime(timeOrdered().toString());
+                    f.setUser(current_user.getEmail());
                 }
+
+                // send order to db
+                newOrder.setValue(orderedItems).addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mPopupWindow.dismiss();
+                                mPopupView = mLayouInflater.inflate(R.layout.popup_thank_you, mActivityLayout, false);
+                                mPopupWindow = new PopupWindow(mPopupView,
+                                        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                                        true);
+
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    mPopupWindow.setElevation(5.0f);
+                                }
+
+                                mPopupWindow.showAtLocation(mActivityLayout, Gravity.CENTER, 0, 0);
+
+                                dimBehind(mPopupWindow);
+                            }
+                        }
+                );
+
+                // clear order data
+                OrderSummaryAdapter.clearAdapter();
             }
 
             @Override
@@ -212,7 +223,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 //        while (mIdInt == 0) {
 //            Log.i(LOG_TAG, "count: " + count++);
 //        }
-       
+
     }
 
     private Object timeOrdered() {
